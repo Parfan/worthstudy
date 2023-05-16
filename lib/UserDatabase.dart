@@ -47,6 +47,15 @@ class UserDatabase {
     );
   }
 
+  static Future<List<User>> getAllUsers({String? condition}) async {
+    if (_database == null) {
+      throw Exception('Database not initialized.');
+    }
+    final List<Map<String, dynamic>> maps =
+        await _database!.query('users', where: condition);
+    return List.generate(maps.length, (index) => User.fromMap(maps[index]));
+  }
+
   static Future<User?> getUser(int id) async {
     if (_database == null) {
       throw Exception('Database not initialized.');
@@ -60,14 +69,5 @@ class UserDatabase {
       return User.fromMap(maps.first);
     }
     return null;
-  }
-
-  static Future<List<User>> getAllUsers({String? condition}) async {
-    if (_database == null) {
-      throw Exception('Database not initialized.');
-    }
-    final List<Map<String, dynamic>> maps =
-        await _database!.query('users', where: condition);
-    return List.generate(maps.length, (index) => User.fromMap(maps[index]));
   }
 }
