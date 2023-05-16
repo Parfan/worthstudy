@@ -36,6 +36,17 @@ class UserDatabase {
     );
   }
 
+  static Future<int> deleteUser(int id) async {
+    if (_database == null) {
+      throw Exception('Database not initialized.');
+    }
+    return await _database!.delete(
+      'users',
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+  }
+
   static Future<User?> getUser(int id) async {
     if (_database == null) {
       throw Exception('Database not initialized.');
